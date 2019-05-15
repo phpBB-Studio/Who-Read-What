@@ -1,0 +1,26 @@
+/**
+ * phpBB Studio's WRW extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2019 phpBB Studio <https://www.phpbbstudio.com>
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ */
+
+.wrw-memberlist-header {
+	font-size: 1.4em;
+	text-align: center;
+	padding: 5px 10px;
+	margin: 10px 0;
+	box-shadow: 1px 2px 3px grey;
+	border-radius: 7px;
+	background-color: #cceded;
+	color: #053aa7;
+}
+
+.wrw-memberlist-inner {
+	padding: 5px 10px;
+	border-radius: 7px;
+	margin: 10px 0;
+	box-shadow: 1px 2px 3px #603204;
+	font-size: inherit;
+	background-color: #c4ffd34d;
+}

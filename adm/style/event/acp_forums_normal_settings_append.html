@@ -1,0 +1,13 @@
+{% if S_FORUM_WRW_AUTH %}
+<fieldset>
+	<legend>{{ lang('ACP_WRW_CAT') }}</legend>
+
+	<dl>
+		<dt><label for="forum_wrw_read_y">{{ lang('ACP_FORUM_WRW_READ') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_FORUM_WRW_READ_DESC') }}</span></dt>
+		<dd>
+			<label><input type="radio" class="radio" id="forum_wrw_read_y" name="forum_wrw_read" value="1"{% if S_FORUM_WRW_READ %} checked="checked"{% endif %} /> {{ lang('ENABLED') }}</label>
+			<label><input type="radio" class="radio" id="forum_wrw_read_n" name="forum_wrw_read" value="0"{% if not S_FORUM_WRW_READ %} checked="checked"{% endif %} /> {{ lang('DISABLED') }}</label>
+		</dd>
+	</dl>
+</fieldset>
+{% endif %}

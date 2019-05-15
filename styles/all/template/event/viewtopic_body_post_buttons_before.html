@@ -1,0 +1,7 @@
+{% if S_WRW_READ and S_WRW_VIEW %}
+	<li>
+		<a href="{{ path('phpbbstudio_wrw_read_list', {'mode': 'post', 'id': postrow.POST_ID}) }}" title="{{ lang('WRW_VIEW_POST_READ') }}" class="button button-icon-only">
+			<i class="icon fa-check fa-fw" aria-hidden="true"></i><span class="sr-only">{{ lang('WRW_VIEW_POST_READ') }}</span>
+		</a>
+	</li>
+{% endif %}

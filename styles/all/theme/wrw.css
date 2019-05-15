@@ -1,0 +1,139 @@
+/**
+ * phpBB Studio's WRW extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2019 phpBB Studio <https://www.phpbbstudio.com>
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ */
+
+/***********************************
+* This section is for metrics page *
+***********************************/
+
+.wrw-span-1 {
+	top: 8px;
+	position: relative;
+	font-size: 9px;
+	font-weight: bold;
+}
+
+.wrw-div-1 {
+	margin: 2px auto;
+	text-align: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 100%;
+	background-color: #80BF00;
+}
+
+.wrw-div-2 {
+	position: relative;
+	top: 5px;
+	left: 5px;
+	text-align: center;
+	width: 30px;
+	height: 30px;
+	border-radius: 100%;
+	background-color: #ECF3F7;
+}
+
+/* Main viewport container, uses flex row wrap */
+#wrw-container {
+	background: none;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	flex-flow: row wrap;
+	overflow: auto;
+	justify-content: space-around;
+}
+
+/* Each element within the viewport container */
+.wrw-flex-item {
+	-webkit-box-flex: 1;
+	-ms-flex: 1 1 auto;
+	flex: 1 1;
+}
+
+/* Avatar container */
+.wrw-flex-avatar {
+	border-width: 1px;
+	padding: 2px;
+	border-style: none;
+	vertical-align: middle;
+	box-shadow: 1px 2px 3px grey;
+	border-radius: 4px;
+	background-color: transparent;
+	width: auto;
+	display: inline-flex;
+}
+
+/* Avatar image */
+.wrw-flex-avatar img {
+	width: 32px;
+	height: 32px;
+}
+
+/* The wrapper for each user content - default packed */
+.wrw-flex-cell {
+	background: none;
+	border-width: 2px;
+	padding: 3px;
+	border-style: solid;
+	border-color: #729ea5;
+	width: auto;
+	height: 86px;
+	vertical-align: middle;
+	border-radius: 7px;
+	box-shadow: 1px 2px 3px grey;
+	display: flex;
+	align-items: start;
+}
+
+/* Each text entry, with or without a link - default packed */
+.wrw-flex-text,
+.wrw-flex-text a {
+	flex: 1;
+	font-size: 1em;
+	text-decoration: none;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: auto; /* (245 - (2+2)) wrw-flex-cell width */
+	line-height: 1.6em;
+}
+
+/* Center */
+.wrw-center {
+	text-align: center;
+}
+
+.wrw-post-username {
+	font-size: 1em;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 180px;
+}
+
+.wrw-topic-username {
+	font-size: 1em;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 100px;
+	margin-right: 2px;
+}
+
+/* Div header 1 */
+.wrw-header1 {
+	font-size: 1.5em;
+}
+
+.wrw-post-overflow {
+	overflow-y: scroll;
+	width: auto;
+	max-height: 250px;
+}
+/***********************************
+* End section                      *
+***********************************/

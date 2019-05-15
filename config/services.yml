@@ -1,0 +1,113 @@
+imports:
+    - { resource: tables.yml }
+
+services:
+    phpbbstudio.wrw.listener.setup:
+        class: \phpbbstudio\wrw\event\setup_listener
+        arguments:
+            - '@language'
+        tags:
+            - { name: event.listener }
+
+    phpbbstudio.wrw.listener.acp:
+        class: \phpbbstudio\wrw\event\acp_listener
+        arguments:
+            - '@request'
+            - '@phpbbstudio.wrw.functions.common'
+        tags:
+            - { name: event.listener }
+
+    phpbbstudio.wrw.listener.read:
+        class: \phpbbstudio\wrw\event\read_listener
+        arguments:
+            - '@dbal.conn'
+            - '@config'
+            - '@controller.helper'
+            - '@template'
+            - '@user'
+            - '%phpbbstudio.wrw.tables.read%'
+            - '@phpbbstudio.wrw.functions.common'
+        tags:
+            - { name: event.listener }
+
+    phpbbstudio.wrw.listener.moderation:
+        class: \phpbbstudio\wrw\event\moderation_listener
+        arguments:
+            - '@dbal.conn'
+            - '@request'
+            - '%phpbbstudio.wrw.tables.read%'
+        tags:
+            - { name: event.listener }
+
+    phpbbstudio.wrw.listener.memberlist:
+        class: \phpbbstudio\wrw\event\memberlist_listener
+        arguments:
+            - '@dbal.conn'
+            - '@config'
+            - '@controller.helper'
+            - '@language'
+            - '@template'
+            - '@user'
+            - '%phpbbstudio.wrw.tables.read%'
+            - '@phpbbstudio.wrw.functions.common'
+        tags:
+            - { name: event.listener }
+
+    phpbbstudio.wrw.functions.common:
+        class: \phpbbstudio\wrw\core\functions_common
+        arguments:
+            - '@auth'
+            - '@config'
+            - '@dbal.conn'
+            - '@user'
+            - '@ext.manager'
+
+    phpbbstudio.wrw.controller.admin:
+        class: \phpbbstudio\wrw\controller\admin_controller
+        arguments:
+            - '@config'
+            - '@language'
+            - '@log'
+            - '@request'
+            - '@template'
+            - '@user'
+
+    phpbbstudio.wrw.controller.read:
+        class: \phpbbstudio\wrw\controller\read_controller
+        arguments:
+            - '@auth'
+            - '@dbal.conn'
+            - '@config'
+            - '@controller.helper'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '@language'
+            - '%phpbbstudio.wrw.tables.read%'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '@phpbbstudio.wrw.functions.common'
+            - '@pagination'
+            - '%core.table_prefix%'
+            - '@text_formatter.renderer'
+
+    phpbbstudio.wrw.controller.view:
+        class: \phpbbstudio\wrw\controller\view_controller
+        arguments:
+            - '@auth'
+            - '@config'
+            - '@content.visibility'
+            - '@dbal.conn'
+            - '@phpbbstudio.wrw.functions.common'
+            - '@group_helper'
+            - '@controller.helper'
+            - '@language'
+            - '@pagination'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '@text_formatter.utils'
+            - '%phpbbstudio.wrw.tables.read%'
+            - '%core.table_prefix%'
+            - '%core.root_path%'
+            - '%core.php_ext%'

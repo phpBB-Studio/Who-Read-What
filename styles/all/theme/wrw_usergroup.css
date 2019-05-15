@@ -1,0 +1,201 @@
+/**
+ * phpBB Studio's WRW extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2019 phpBB Studio <https://www.phpbbstudio.com>
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ */
+
+.wrw-ug-details {
+	font-size: 1rem;
+	margin-bottom: 0;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.wrw-ug-crumbs {
+	font-size: 1.1em;
+	line-height: 2.2em;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+.wrw-ug-crumbs .wrw-ug-crumb {
+	font-weight: bold;
+	word-wrap: normal;
+}
+
+.wrw-ug-crumbs .wrw-ug-crumb a {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	vertical-align: bottom;
+	overflow: hidden;
+}
+
+.wrw-ug-details > .inner {
+	display: flex;
+}
+
+.wrw-ug-details > .inner > div {
+	flex: 0 33%;
+}
+
+.wrw-ug-details dl.details {
+	font-size: .9rem;
+}
+
+.wrw-ug-center {
+	text-align: center;
+}
+
+@media all and (max-width: 700px) {
+	.wrw-ug-details {
+		padding: 0;
+	}
+
+	.wrw-ug-details > .inner {
+		flex-flow: row wrap;
+	}
+
+	.wrw-ug-details > .inner > .wrw-ug-avatar {
+		flex: 0 50%;
+	}
+
+	.wrw-ug-details > .inner > .wrw-ug-name {
+		flex: 0 100%;
+	}
+
+	.wrw-ug-details > .inner > .wrw-ug-avatar + .wrw-ug-name {
+		flex: 0 50%;
+	}
+
+	.wrw-ug-avatar,
+	.wrw-ug-name {
+		padding: 5px 0;
+	}
+
+	.wrw-ug-details > .inner > .wrw-ug-stats {
+		flex: 0 100%;
+	}
+
+	.wrw-ug-stats > dl {
+		display: flex;
+		flex-flow: row wrap;
+		box-sizing: border-box;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	}
+
+	.wrw-ug-stats > dl * {
+		box-sizing: border-box;
+	}
+
+	.wrw-ug-stats > dl > dt {
+		flex: 0 10%;
+		padding: 3px 2px 3px 10px;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		border-bottom: none;
+		background: rgba(255, 255, 255, .25);
+	}
+
+	.wrw-ug-stats > dl > dd {
+		flex: 1 40%;
+		margin: 0;
+		padding: 3px 5px;
+		border-top: 1px solid rgba(0, 0, 0, 0.1);
+		background: rgba(255, 255, 255, .75);
+	}
+}
+
+h2.forum-title + div.forabg.wrw-ug-forums {
+	margin-top: 32px;
+}
+
+.wrw-ug-enabled {
+	position: absolute;
+	top: calc(50% - 17px);
+	left: 0;
+	margin: 0 9px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.5);
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	width: 32px;
+	height: 32px;
+	text-align: center;
+	font-size: 16px;
+	line-height: 32px;
+}
+
+.wrw-ug-enabled i:before {
+	padding-right: 0;
+	padding-left: 1px;
+	vertical-align: 1px;
+}
+
+dl.row-item dt.wrw-ug-topic {
+	background: none;
+	width: 400px;
+	margin: 0;
+}
+
+dl.row-item dt.wrw-ug-topic .list-inner {
+	padding-left: 5px;
+	margin: 0;
+}
+
+.wrw-ug-topic { width: 400px; }
+
+.wrw-ug-lastpost {
+	width: calc((100% - 400px - 95px) / 3);
+}
+
+.wrw-ug-wrw {
+	width: calc((100% - 400px - 95px) / 1.5);
+}
+
+.wrw-ug-hlposts,
+.wrw-ug-hlposts + .wrw-ug-wrw {
+	width: calc((100% - 400px - 95px) / 3);
+}
+
+.wrw-ug-lastpost .list-inner,
+.wrw-ug-hlposts .list-inner,
+.wrw-ug-wrw .list-inner {
+	padding: 4px 5px;
+}
+
+.wrw-ug-topictitle {
+	font-family: "Trebuchet MS", Helvetica, Arial, Sans-serif;
+	font-size: 1.2em;
+	text-decoration: none;
+	display: inline;
+}
+
+.wrw-ug-post-not-read {
+	margin: 10px 0;
+	font-size: 1.1em;
+	min-height: 14px;
+	line-height: 14px;
+}
+
+.wrw-ug-post dt.no-avatar hr {
+	border-top-color: #fff;
+}
+
+.wrw-ug-topics div.list-inner img,
+.wrw-ug-post p.author img {
+	height: 14px;
+	width: auto;
+	min-width: 14px;
+	padding: 0 3px 0 1px;
+}
+
+.wrw-ug-post-read {
+	background-color: #bdefe2;
+}
+
+.wrw-ug-action .dropdown-contents a > i + span {
+	margin-left: 5px;
+}
+
+.forabg + .action-bar.wrw-ug-action {
+	margin-top: 0;
+}

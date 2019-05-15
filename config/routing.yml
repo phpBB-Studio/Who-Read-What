@@ -1,0 +1,20 @@
+phpbbstudio_wrw_read:
+    path: /wrwread
+    defaults:
+        _controller: phpbbstudio.wrw.controller.read:mark
+
+phpbbstudio_wrw_read_list:
+    path: /wrw/read/{mode}/{id}
+    defaults:
+        _controller: phpbbstudio.wrw.controller.read:view
+    requirements:
+        mode: topic|post
+        id: \d+
+
+phpbbstudio_wrw_read_usergroup:
+    path: /wrw/read/{mode}/{id}
+    defaults:
+        _controller: phpbbstudio.wrw.controller.view:handle
+    requirements:
+        mode: user|group
+        id: \d+

@@ -1,0 +1,9 @@
+{% if S_WRW_VIEW %}
+	{% set read_time = (WRW_READ_TIME is defined) ? WRW_READ_TIME : postrow.WRW_READ_TIME %}
+
+	<div class="wrw-read{% if not S_WRW_VIEW %} hidden{% endif %}">
+		<i class="icon fa-check-square fa-fw icon-green icon-md" aria-hidden="true"></i>
+		<span class="responsive-hide"> {{ lang('WRW_READ') }}&nbsp;&raquo;</span>
+		&nbsp;{{ read_time }}
+	</div>
+{% endif %}

@@ -1,0 +1,80 @@
+{% include 'overall_header.html' %}
+
+{# Include our ACP - CSS #}
+{% if not definition.INCLUDED_WRWACPCSS %}
+	{% INCLUDECSS '@phpbbstudio_wrw/wrw_acp.css' %}
+	{% DEFINE INCLUDED_WRWACPCSS = true %}
+{% endif %}
+
+<div class="wrw-acp-header">{{ lang('ACP_WRW_SETTINGS_PAGE_T') }}</div>
+<br>
+<form id="wrw_settings" name="wrw_settings" action="{{ U_ACTION }}" method="post">
+	<fieldset class="wrw-acp-fieldset-1">
+		<legend>{{ lang('ACP_WRW_SETTINGS_TITLE') }}</legend>
+
+		<dl>
+			<dt>
+				<label for="wrw_active_on"><i class="fa fa-handshake-o fa-fw wrw-acp-fa-green"></i> {{ lang('ACP_WRW_READ_ACTIVE') }}{{ lang('COLON') }}</label><br><span class="explain">{{ lang('ACP_WRW_READ_ACTIVE_DESC') }}</span>
+			</dt>
+			<dd>
+				<input type="radio" class="radio" name="wrw_active" value="1" id="wrw_active_on"{% if WRW_READ_ACTIVE %} checked="checked"{% endif %}> {{ lang('YES') }}
+				&nbsp;
+				<input type="radio" class="radio" name="wrw_active" value="0" id="wrw_active_off"{% if not WRW_READ_ACTIVE %} checked="checked"{% endif %}> {{ lang('NO') }}
+			</dd>
+		</dl>
+
+		<dl>
+			<dt>
+				<label for="wrw_read_int"><i class="fa fa-refresh fa-fw wrw-acp-fa-green"></i> {{ lang('ACP_WRW_READ_INT') ~ lang('COLON') }} </label><br><span class="explain">{{ lang('ACP_WRW_READ_INT_DESC') }}</span>
+			</dt>
+			<dd>
+				<input id="wrw_read_int" name="wrw_read_int" value="{{ WRW_READ_INT }}" type="number" min="1" max="30" step="1"> {{ lang('SECONDS') }}
+			</dd>
+		</dl>
+
+		<dl>
+			<dt>
+				<label for="wrw_read_pct"><i class="fa fa-percent fa-fw wrw-acp-fa-green"></i> {{ lang('ACP_WRW_READ_PCT') ~ lang('COLON') }} </label><br><span class="explain">{{ lang('ACP_WRW_READ_PCT_DESC') }}</span>
+			</dt>
+			<dd>
+				<input id="wrw_read_pct" name="wrw_read_pct" value="{{ WRW_READ_PCT }}" type="number" min="50" max="100" step="1"> {{ lang('ACP_WRW_READ_PCT_PERCENT') }}
+			</dd>
+		</dl>
+
+		<dl>
+			<dt>
+				<label for="wrw_read_cpw"><i class="fa fa-expand fa-fw wrw-acp-fa-green"></i> {{ lang('ACP_WRW_READ_CPW') ~ lang('COLON') }} </label><br><span class="explain">{{ lang('ACP_WRW_READ_CPW_DESC', '<a href="http://www.ravi.io/language-word-lengths" target="blank">', '</a>') }}</span>
+			</dt>
+			<dd>
+				<input id="wrw_read_cpw" name="wrw_read_cpw" value="{{ WRW_READ_CPW }}" type="number" min="4" max="15" step="0.01"> {{ lang('ACP_WRW_READ_CHARS') }}
+			</dd>
+		</dl>
+
+		<dl>
+			<dt>
+				<label for="wrw_read_wpm"><i class="fa fa-clock-o fa-fw wrw-acp-fa-green"></i> {{ lang('ACP_WRW_READ_WPM') ~ lang('COLON') }} </label><br><span class="explain">{{ lang('ACP_WRW_READ_WPM_DESC') }}</span>
+			</dt>
+			<dd>
+				<input id="wrw_read_wpm" name="wrw_read_wpm" value="{{ WRW_READ_WPM }}" type="number" min="50" max="500" step="1"> {{ lang('ACP_WRW_READ_WORDS') }}
+			</dd>
+		</dl>
+
+		<dl>
+			<dt>
+				<label for="wrw_read_seq_on"><i class="fa fa-step-forward fa-fw wrw-acp-fa-green"></i> {{ lang('ACP_WRW_READ_SEQ') ~ lang('COLON') }}</label><br><span class="explain">{{ lang('ACP_WRW_READ_SEQ_DESC') }}</span>
+			</dt>
+			<dd>
+				<input class="radio" type="radio" id="wrw_read_seq_on" name="wrw_read_seq" value="1" {% if WRW_READ_SEQ %} checked="checked"{% endif %}> {{ lang('ENABLED') }}
+				&nbsp;
+				<input class="radio" type="radio" id="wrw_read_seq_off" name="wrw_read_seq" value="0" {% if not WRW_READ_SEQ %} checked="checked"{% endif %}> {{ lang('DISABLED') }}
+			</dd>
+		</dl>
+	</fieldset>
+
+	<fieldset class="submit-buttons">
+		<input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}">
+		<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}">
+	</fieldset>
+</form>
+
+{% include 'overall_footer.html' %}

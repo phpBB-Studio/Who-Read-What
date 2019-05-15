@@ -1,0 +1,158 @@
+{% include 'overall_header.html' %}
+
+{# Include WRW - CSS #}
+{% if not definition.INCLUDED_WRWCSS %}
+{% INCLUDECSS '@phpbbstudio_wrw/wrw.css' %}
+	{% DEFINE INCLUDED_WRWCSS = true %}
+{% endif %}
+
+{# Include WRWMEMBERLIST - CSS #}
+{% if not definition.INCLUDED_WRWMEMBERLISTCSS %}
+{% INCLUDECSS '@phpbbstudio_wrw/wrw_memberlist.css' %}
+	{% DEFINE INCLUDED_WRWMEMBERLISTCSS = true %}
+{% endif %}
+
+<div class="panel bg1">
+	<div class="wrw-memberlist-header">
+	<h3>{{ lang('WRW_CAT') }}</h3>
+		{% if WRW_IN_POST_MODE %}
+			{{ lang('WRW_POST_LIST_PAGE') }}{% if S_IS_HLPOSTS %}<br>{{ lang('WRW_HLPOSTS_POST_LIST_PAGE') }}{% endif %}
+		{% elseif WRW_IN_TOPIC_MODE %}
+			{{ lang('WRW_TOPIC_LIST_PAGE') }}
+		{% endif %}
+	</div>
+</div>
+
+<div class="panel bg1">
+	<div class="inner wrw-memberlist-inner">
+		<div class="wrw-center wrw-header1">
+			<strong>{{ lang('WRW_TOPIC') ~ lang('COLON') }}</strong> <a href="{{ U_TOPIC }}">{{ TOPIC_TITLE }}</a> &bull; <strong>{{ lang('WRW_DATE') ~ lang('COLON') }}</strong> {{ TOPIC_TIME }} &bull; <strong>{{ lang('WRW_BY') ~ lang('COLON') }}</strong> {{ TOPIC_USER }} &bull; <strong>{{ lang('WRW_VIEWS') ~ lang('COLON') }}</strong> {{ TOPIC_VIEWS }} &bull; <strong>{{ lang('WRW_POSTS') ~ lang('COLON') }}</strong> {{ TOPIC_POSTS }}
+		</div>
+	</div>	
+</div>
+
+{% if WRW_IN_POST_MODE %}
+	<div class="post bg2">
+		<div class="inner wrw-memberlist-inner">
+			<div class="postbody">
+				<h3 class="first"><a href="{{ U_POST }}" title="{{ lang('VIEW_TOPIC') }}">{{ POST_SUBJECT }}</a></h3>
+
+				<p class="author">
+					<i class="icon fa-file fa-fw icon-lightgray icon-md" aria-hidden="true"></i>
+					{{ lang('POST_BY_AUTHOR') }} {{ POST_AUTHOR }} &raquo; {{ POST_TIME }}
+				</p>
+
+				<div class="content wrw-post-overflow">
+					{{ POST_TEXT }}
+					{% if attachments|length %}
+						<br>
+						<dl class="attachbox">
+							<dt>
+								{{ lang('ATTACHMENTS') }}
+							</dt>
+
+							{% for attachment in attachments %}
+								<dd>{{ attachment.POST_ATTACHMENTS }}<dd>
+							{% endfor %}
+						</dl>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endif %}
+
+<div class="action-bar bar-top">
+	{% if WRW_IN_POST_MODE %}
+		<div class="member-search panel">
+			<i class="icon fa-angle-double-left fa-fw icon-bluegray" aria-hidden="true"></i> <a href="{{ U_POST }}" title="{{ lang('WRW_RETURN_TO_POST') }}">{{ lang('WRW_RETURN_TO_POST') }}</a>
+		</div>
+	{% endif %}
+	<div class="pagination">
+		{{ TOTAL_USERS }}
+		{% if pagination|length %}
+			{% INCLUDE 'pagination.html' %}
+		{% else %}
+			&bull; {{ PAGE_NUMBER }}
+		{% endif %}
+	</div>
+</div>
+
+<div class="panel bg1">
+	<div class="inner">
+		<div id="wrw-container" class="wrw-container">
+
+			{% for user in users %}
+			<div class="wrw-flex-cell">
+				<div class="wrw-flex-item">
+					{% if WRW_IN_TOPIC_MODE %}
+						<div class="wrw-div-1" style="background-image: linear-gradient({{ user.DEGREE }}deg, transparent 50%, {% if user.TOPIC_PERCENT > 50 %}#80BF00{% else %}#CCCCCC{% endif %} 50%), linear-gradient(90deg, #CCCCCC 50%, transparent 50%)">
+							<div class="wrw-div-2">
+								<span class="wrw-span-1">
+									{% if not user.S_WRW_AVAILABLE %}
+										0&#37;
+									{% else %}
+										{{ user.TOPIC_PERCENT }}&#37;
+									{% endif %}
+								</span>
+							</div>
+						</div>
+					{% endif %}
+
+					<div class="wrw-flex-avatar">
+						{{ user.AVATAR }}
+
+						{% if WRW_IN_TOPIC_MODE %}
+							&nbsp;<span class="wrw-topic-username" title="{{ user.PLAIN_NAME }}">{{ user.NAME }}</span>
+
+							<div class="wrw-flex-text">
+								{% if user.TOTAL %}<strong>{{ lang('WRW_READ_TOTAL') ~ lang('COLON') }}</strong> ({{ user.TOTAL }}){% endif %}
+								<br>
+								{% if user.TRUE_PERCENT %}<i class="fa fa-percent" aria-hidden="true"></i><strong> {{ lang('WRW_TOPIC_PERCENT') ~ lang('COLON') }}</strong> {{ user.TRUE_PERCENT }}{% endif %}
+							</div>
+						{% endif %}
+					</div>
+
+					{% if WRW_IN_POST_MODE %}
+						<div class="wrw-flex-text wrw-post-username" title="{{ user.PLAIN_NAME }}">
+							{% if user.NAME %} {{ user.NAME }}{% endif %}
+						</div>
+
+						<div class="wrw-flex-text" title="{% if user.TIME %}{{ user.TIME }}{% endif %}">
+							{% if user.TIME %}<strong>{{ lang('WRW_READ_AT') ~ lang('COLON') }}</strong> {{ user.TIME }}{% endif %}
+						</div>
+
+						<div class="wrw-flex-text" title="{% if WRW_IN_POST_MODE and S_IS_HLPOSTS %}{% if user.MARKED_HLP %}{{ user.MARKED_HLP }}{% else %}{{ lang('WRW_NO_HLPOSTS') }}{% endif %}{% endif %}">
+							{% if S_IS_HLPOSTS %}
+								<strong>{{ lang('WRW_MARKED_HLPOSTS') ~ lang('COLON') }}</strong> {% if user.MARKED_HLP %}{{ user.MARKED_HLP }}{% else %}{{ lang('WRW_NO_HLPOSTS') }}{% endif %}
+							{% endif %}
+						</div>
+					{% endif %}
+				</div>
+			</div>
+			{% endfor %}
+
+		</div>
+	</div>
+</div>
+
+<div class="action-bar bar-top">
+	{% if WRW_IN_POST_MODE %}
+		<div class="member-search panel">
+			<i class="icon fa-angle-double-left fa-fw icon-bluegray" aria-hidden="true"></i> <a href="{{ U_POST }}" title="{{ lang('WRW_RETURN_TO_POST') }}">{{ lang('WRW_RETURN_TO_POST') }}</a>
+		</div>
+	{% endif %}
+
+	<div class="pagination">
+		{{ TOTAL_USERS }}
+		{% if pagination|length %}
+			{% INCLUDE 'pagination.html' %}
+		{% else %}
+			&bull; {{ PAGE_NUMBER }}
+		{% endif %}
+	</div>
+</div>
+
+{% include 'jumpbox.html' %}
+
+{% include 'overall_footer.html' %}

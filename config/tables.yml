@@ -1,0 +1,2 @@
+parameters:
+    phpbbstudio.wrw.tables.read: '%core.table_prefix%wrw_read'

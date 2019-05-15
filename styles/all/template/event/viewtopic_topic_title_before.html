@@ -1,0 +1,10 @@
+{% if S_WRW_READ %}
+
+	{% if not definition.INCLUDED_PSWRWJS %}
+		{% INCLUDEJS '@phpbbstudio_wrw/js/ps_wrw.js' %}
+		{% DEFINE INCLUDED_PSWRWJS = true %}
+	{% endif %}
+
+	<div id="wrw_read_data" class="hidden" data-url="{{ U_WRW_READ|url_encode }}" data-int="{{ WRW_READ_INT|e('js') }}" data-pct="{{ WRW_READ_PCT|e('js') }}" data-wpm="{{ WRW_READ_WPM|e('js') }}" data-cpw="{{ WRW_READ_CPW|e('js') }}" data-seq="{{ WRW_READ_SEQ|e('js') }}" data-forum="{{ FORUM_ID }}" data-topic="{{ TOPIC_ID }}"></div>
+
+{% endif %}

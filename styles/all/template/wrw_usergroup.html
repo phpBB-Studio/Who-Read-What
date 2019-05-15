@@ -1,0 +1,447 @@
+{% include 'overall_header.html' %}
+
+{% if forumrow|length or topicrow|length or postrow|length %}
+	<div class="stat-block">
+		<h3>{{ lang('INFORMATION') }}</h3>
+		<p>
+			{% macro iconmd(icon) %}<i class="fa fa-{{ icon }} icon-md" aria-hidden="true"></i>{% endmacro iconmd %}
+			{% from _self import iconmd as iconmd %}
+
+			{% if forumrow|length or topicrow|length %}
+				{{ lang('WRW_INFO_COLUMN', iconmd('check'), iconmd('percent'), iconmd('clock-o')) }}
+				{% if forumrow|length %}
+					<br>{{ lang('WRW_INFO_ICON', iconmd('check'), iconmd('times')) }}
+				{% endif %}
+				{% if topicrow|length %}
+					<br>{{ lang('WRW_INFO_COLUMN_WRW', S_WRW_HLPOSTS ? '<em>' ~ lang('WRW_AUTO') ~ '</em> ' : '') }}
+					{% if S_WRW_HLPOSTS %}<br>{{ lang('WRW_INFO_COLUMN_HP') }}{% endif %}
+				{% endif %}
+			{% elseif postrow|length %}
+				{{ lang('WRW_INFO_READ') }}<br>
+				{{ lang('WRW_INFO_PANEL_WRW') }}<br>
+				{% if S_WRW_HLPOSTS %}{{ lang('WRW_INFO_PANEL_HP') }}<br>{% endif %}
+				{{ lang('WRW_INFO_ICONS_' ~ S_WRW_MODE|upper, iconmd('check'), iconmd(S_WRW_MODE === 'user' ? 'user' : 'users'), iconmd('clock-o')) }}
+			{% endif %}
+		</p>
+	</div>
+{% endif %}
+
+{# Include WRWUSERGROUPCSS - CSS #}
+{% if not definition.INCLUDED_WRWUSERGROUPCSS %}
+{% INCLUDECSS '@phpbbstudio_wrw/wrw_usergroup.css' %}
+	{% DEFINE INCLUDED_WRWUSERGROUPCSS = true %}
+{% endif %}
+
+<div class="wrw-ug-details panel bg1">
+	<div class="inner">
+		<div class="wrw-ug-avatar wrw-ug-center{% if not WRW_AVATAR %} responsive-hide{% endif %}">
+			{{ WRW_AVATAR }}
+		</div>
+
+		<div class="wrw-ug-name wrw-ug-center">
+			<h4>{{ WRW_NAME_FULL }}</h4>
+
+			<div class="responsive-hide">
+				{{ WRW_RANK }}
+				{% if WRW_RANK_IMG %}<br>{{ WRW_RANK_IMG }}{% endif %}
+				{% if groups|length %}<br>{% endif %}
+			</div>
+			{% if groups|length %}
+				<small>
+					{% for group in groups %}
+						<a href="{{ group.U_READ }}">{{ group.NAME }}</a>{% if not loop.last %}{{ lang('COMMA_SEPARATOR') }}{% endif %}
+					{% endfor %}
+				</small>
+			{% endif %}
+		</div>
+
+		<div class="wrw-ug-stats">
+			<dl class="details">
+				{% if not S_WRW_TOPIC %}
+					<dt>
+						<span class="responsive-hide">{{ lang('TOPICS') ~ lang('COLON') }}</span>
+						<span class="responsive-show hidden"><i class="icon fa-book fa-fw" aria-hidden="true"></i></span>
+					</dt>
+						<dd>{{ WRW_READ_TOPICS }}</dd>
+				{% endif %}
+				<dt>
+					<span class="responsive-hide">{{ lang('POSTS') ~ lang('COLON') }}</span>
+					<span class="responsive-show hidden"><i class="icon fa-comments fa-fw" aria-hidden="true"></i></span>
+				</dt>
+					<dd>{{ WRW_READ_POSTS }}</dd>
+				{% if S_WRW_TOPIC %}
+					<dt>
+						<span class="responsive-hide">{{ lang('WRW_PERCENTAGE') ~ lang('COLON') }}</span>
+						<span class="responsive-show hidden"><i class="icon fa-percent fa-fw" aria-hidden="true"></i></span>
+					</dt>
+						<dd>{{ (WRW_READ_POSTS / POSTS_COUNT * 100)|round(2) }}</dd>
+				{% endif %}
+				<dt>
+					<span class="responsive-hide">{{ lang('TIME') ~ lang('COLON') }}</span>
+					<span class="responsive-show hidden"><i class="icon fa-clock-o fa-fw" aria-hidden="true"></i></span>
+				</dt>
+					<dd>{% if WRW_READ_LAST %}{{ WRW_READ_LAST }}{% else %}{{ lang('NEVER') }}{% endif %}</dd>
+			</dl>
+		</div>
+	</div>
+</div>
+
+<div class="wrw-ug-crumbs panel bg2">
+	<span class="wrw-ug-crumb">
+		<a href="{{ U_WRW_BASE }}">
+			<i class="icon {% if S_WRW_MODE == 'user' %}fa-user{% else %}fa-users{% endif %} fa-fw" aria-hidden="true"></i>{{ WRW_NAME }}
+		</a>
+	</span>
+	{% for crumb in wrw_crumbs %}
+		<span class="wrw-ug-crumb">
+			<i class="icon fa-angle-right fa-fw" aria-hidden="true"></i>
+			<a href="{{ crumb.U_VIEW }}">{{ crumb.NAME }}</a>
+		</span>
+	{% endfor %}
+	{% if TOPIC_TITLE %}
+		<span class="wrw-ug-crumb">
+			<i class="icon fa-angle-right fa-fw" aria-hidden="true"></i>
+			<a href="{{ U_TOPIC }}">{{ TOPIC_TITLE }}</a>
+		</span>
+	{% endif %}
+</div>
+
+{% if TOPIC_TITLE %}
+	<h2 class="topic-title">{{ TOPIC_TITLE }}</h2>
+{% else %}
+	<h2 class="forum-title">{{ FORUM_NAME }}</h2>
+{% endif %}
+
+<div class="action-bar bar-top wrw-ug-action">
+	<div class="dropdown-container">
+		<a class="button dropdown-trigger" href="#">
+			<i class="icon fa-bars fa-fw" aria-hidden="true"></i>
+			<span>{{ lang('QUICK_LINKS') }}</span>
+		</a>
+		<div class="dropdown">
+			<div class="pointer"><div class="pointer-inner"></div></div>
+			<ul class="dropdown-contents">
+				<li>
+					{% if S_WRW_FORUM %}
+						<a href="{{ U_VIEW_FORUM }}">
+							<i class="icon fa-file-o fa-fw icon-red" aria-hidden="true"></i><span>{{ lang('WRW_VIEW_FORUM') }}</span>
+						</a>
+					{% else %}
+						<a href="{{ U_INDEX }}">
+							<i class="icon fa-home fa-fw icon-black" aria-hidden="true"></i><span>{{ lang('FORUM_INDEX') }}</span>
+						</a>
+					{% endif %}
+				</li>
+				{% if S_WRW_TOPIC %}
+					<li class="separator"></li>
+					<li>
+						<a href="{{ U_VIEW_TOPIC }}">
+							<i class="icon fa-file-text-o fa-fw icon-blue" aria-hidden="true"></i><span>{{ lang('WRW_VIEW_TOPIC') }}</span>
+						</a>
+					</li>
+					<li class="separator"></li>
+					<li>
+						<a href="{{ U_WRW_TOPIC }}">
+							<i class="icon fa-eye fa-fw icon-green" aria-hidden="true"></i><span>{{ lang('WRW_VIEW_TOPIC_WRW') }}</span>
+						</a>
+					</li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+
+	{% if topicrow|length or postrow|length %}
+		<form method="post" action="{{ U_WRW_SORT }}">
+			{% include 'display_options.html' %}
+		</form>
+
+		<div class="pagination">
+			{% if topicrow|length %}{{ TOTAL_TOPICS }}{% else %}{{ TOTAL_POSTS }}{% endif %}
+			{% if pagination|length %}
+				{% include 'pagination.html' %}
+			{% else %}
+				&bull; {{ PAGE_NUMBER }}
+			{% endif %}
+		</div>
+	{% endif %}
+</div>
+
+{% for forum in forumrow %}
+	{% if (forum.S_IS_CAT and not forum.S_FIRST_ROW) or forum.S_NO_CAT %}
+		</ul>
+
+		</div>
+		</div>
+	{% endif %}
+
+	{% if forum.S_IS_CAT or forum.S_FIRST_ROW or forum.S_NO_CAT %}
+		<div class="forabg wrw-ug-forums">
+		<div class="inner">
+		<ul class="topiclist">
+			<li class="header">
+				<dl class="row-item">
+					<dt><div class="list-inner">{% if forum.S_IS_CAT %}<a href="{{ forum.U_VIEWFORUM }}">{{ forum.FORUM_NAME }}</a>{% else %}{{ lang('FORUM') }}{% endif %}</div></dt>
+					<dd class="topics">{{ lang('TOPICS') }}</dd>
+					<dd class="posts">{{ lang('POSTS') }}</dd>
+					<dd class="lastpost"><span>{{ lang('WRW_READ_POSTS') }}</span></dd>
+				</dl>
+			</li>
+		</ul>
+		<ul class="topiclist forums">
+	{% endif %}
+
+	{% if not forum.S_IS_CAT %}
+		<li class="row">
+			<dl class="row-item">
+				<dt>
+					<span class="wrw-ug-enabled" title="{{ lang('WRW_CAT') ~ lang('COLON') }}{% if forum.S_WRW_ENABLED %}{{ lang('ENABLED') }}{% else %}{{ lang('DISABLED') }}{% endif %}"><i class="icon {% if forum.S_WRW_ENABLED %}fa-check icon-green{% else %}fa-times icon-red{% endif %} fa-fw" aria-hidden="true"></i></span>
+					<div class="list-inner">
+						<a href="{{ forum.U_VIEWFORUM }}" class="forumtitle">{{ forum.FORUM_NAME }}</a>
+						{% if forum.FORUM_DESC %}<br><span class="forum-desc">{{ forum.FORUM_DESC }}</span>{% endif %}
+
+						{% if forum.subforum|length and forum.S_LIST_SUBFORUMS %}
+							<span class="forum-subs">
+								<strong>{{ forum.L_SUBFORUM_STR }}{{ lang('COLON') }}</strong>
+								{% for subforum in forum.subforum %}
+								<a href="{{ subforum.U_SUBFORUM }}" class="subforum read">
+									<i class="icon fa-file-o fa-fw icon-blue icon-md" aria-hidden="true"></i>
+									{{ subforum.SUBFORUM_NAME }}
+									</a>{% if not loop.last %}{{ lang('COMMA_SEPARATOR') }}{% endif %}
+								{% endfor %}
+							</span>
+						{% endif %}
+
+						{% if not S_IS_BOT %}
+							<div class="responsive-show hidden">
+								{{ lang('WRW_READ_POSTS') ~ lang('COLON') }} <strong>{{ forum.WRW_POSTS }}</strong>
+							</div>
+						{% endif %}
+					</div>
+				</dt>
+
+				{% if not forum.S_IS_LINK %}
+					<dd class="topics">{{ forum.TOPICS }}</dd>
+					<dd class="posts">{{ forum.POSTS }}</dd>
+					<dd class="lastpost">
+						<span><i class="icon fa-check fa-fw{% if forum.WRW_POSTS %} icon-green{% endif %}" aria-hidden="true"></i> {{ forum.WRW_POSTS }}</span>
+						<span><i class="icon fa-percent fa-fw" aria-hidden="true"></i> {{ forum.WRW_PERCENT }}</span>
+						{% if forum.WRW_TIME %}<span><i class="icon fa-clock-o fa-fw" aria-hidden="true"></i> {{ forum.WRW_TIME }}</span>{% endif %}
+					</dd>
+				{% endif %}
+			</dl>
+		</li>
+	{% endif %}
+
+	{% if forum.S_LAST_ROW %}
+		</ul>
+
+		</div>
+		</div>
+	{% endif %}
+{% endfor %}
+
+{% if topicrow|length %}
+	<div class="forumbg wrw-ug-topics">
+		<div class="inner">
+			<ul class="topiclist">
+				<li class="header">
+					<dl class="row-item">
+						<dt class="wrw-ug-topic"><div class="list-inner">{{ lang('TOPICS') }}</div></dt>
+						<dd class="wrw-ug-lastpost">{{ lang('LAST_POST') }}</dd>
+						<dd class="posts">{{ lang('REPLIES') }}</dd>
+						{% if S_WRW_HLPOSTS %}<dd class="wrw-ug-hlposts">{{ lang('WRW_READ_POSTS') }} {{ lang('WRW_MAN') }}</dd>{% endif %}
+						<dd class="wrw-ug-wrw"><span>{{ lang('WRW_READ_POSTS') }}{% if S_WRW_HLPOSTS %} {{ lang('WRW_AUTO') }}{% endif %}</span></dd>
+					</dl>
+				</li>
+			</ul>
+			<ul class="topiclist topics">
+				{% for topic in topicrow %}
+					<li class="row {% if loop.even %}bg1{% else %}bg2{% endif %}">
+						<dl class="row-item">
+							<dt class="wrw-ug-topic">
+								<div class="list-inner">
+									<i class="icon fa-{{ topic.TOPIC_ICON }} fa-fw" aria-hidden="true"></i> {% if topic.WRW_POSTS %}<a href="{{ topic.U_VIEW }}" class="topictitle">{{ topic.TOPIC_TITLE }}</a>{% else %}<span class="wrw-ug-topictitle">{{ topic.TOPIC_TITLE }}</span>{% endif %}<br>
+									<span class="responsive-hide">{% if topic.TOPIC_AVATAR %}{{ topic.TOPIC_AVATAR }}{% else %}<i class="icon fa-user fa-fw" aria-hidden="true"></i>{% endif %} <span>{{ topic.TOPIC_AUTHOR }}</span><br></span>
+									<span class="responsive-hide"><i class="icon fa-clock-o fa-fw" aria-hidden="true"></i> <span>{{ topic.TOPIC_TIME }}</span></span>
+									<span class="responsive-show hidden">{{ lang('WRW_READ_POSTS') ~ lang('COLON') }} {{ topic.WRW_POSTS }}</span>
+								</div>
+							</dt>
+
+							<dd class="wrw-ug-lastpost">
+								<div class="list-inner">
+									<i class="icon fa-comment fa-fw" aria-hidden="true"></i> <span>{{ topic.LAST_POST_SUBJECT }}</span><br>
+									{% if topic.LAST_POST_AVATAR %}{{ topic.LAST_POST_AVATAR }}{% else %}<i class="icon fa-user fa-fw" aria-hidden="true"></i>{% endif %} <span>{{ topic.LAST_POST_AUTHOR }}</span><br>
+									<i class="icon fa-clock-o fa-fw" aria-hidden="true"></i> <span>{{ topic.LAST_POST_TIME }}</span>
+								</div>
+							</dd>
+							<dd class="posts">{{ topic.REPLIES }} <dfn>{{ lang('REPLIES') }}</dfn></dd>
+							{% if S_WRW_HLPOSTS %}
+								<dd class="wrw-ug-hlposts">
+									<div class="list-inner">
+										<i class="icon fa-check fa-fw{% if topic.HLP_POSTS %} icon-green{% endif %}" aria-hidden="true"></i> <span>{{ topic.HLP_POSTS }}</span><br>
+										<i class="icon fa-percent fa-fw" aria-hidden="true"></i> <span>{{ topic.HLP_PERCENT }}</span><br>
+										{% if topic.HLP_TIME %}<i class="icon fa-clock-o fa-fw" aria-hidden="true"></i> <span>{{ topic.HLP_TIME }}</span>{% endif %}
+									</div>
+								</dd>
+							{% endif %}
+							<dd class="wrw-ug-wrw">
+								<div class="list-inner">
+									<i class="icon fa-check fa-fw{% if topic.WRW_POSTS %} icon-green{% endif %}" aria-hidden="true"></i> <span>{{ topic.WRW_POSTS }}</span><br>
+									<i class="icon fa-percent fa-fw" aria-hidden="true"></i> <span>{{ topic.WRW_PERCENT }}</span><br>
+									{% if topic.WRW_TIME %}<i class="icon fa-clock-o fa-fw" aria-hidden="true"></i> <span>{{ topic.WRW_TIME }}</span>{% endif %}
+								</div>
+							</dd>
+						</dl>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+{% endif %}
+
+{% if S_WRW_ERROR %}
+	<div class="panel reported wrw-ug-center">
+		<span class="error">{{ WRW_ERROR_MSG }}</span>
+	</div>
+{% elseif postrow|length %}
+	{% for post in postrow %}
+		<div class="post has-profile wrw-ug-post {% if post.S_WRW_READ %}wrw-ug-post-read {% else %}{% if loop.index is even %}bg1{% else %}bg2{% endif %}{% endif %}">
+			<div class="inner">
+				<dl class="postprofile">
+					<dt class="no-avatar">
+						{% if post.S_WRW_READ %}
+							<i class="icon fa-check fa-fw icon-green" aria-hidden="true"></i> {{ lang('WRW_READ') }}
+							<br>
+							{% if S_WRW_MODE == 'user' %}
+								<i class="icon fa-user fa-fw icon-black" aria-hidden="true"></i> {{ WRW_NAME_FULL }}
+							{% else %}
+								<i class="icon fa-users fa-fw icon-black" aria-hidden="true"></i> {{ lang('WRW_POST_READ_USERS', post.WRW_COUNT) }}
+							{% endif %}
+							<br>
+							<i class="icon fa-clock-o fa-fw icon-black" aria-hidden="true"></i> <span>{{ post.WRW_TIME }}</span>
+						{% else %}
+							<div class="panel bg3 wrw-ug-post-not-read error">{{ lang('WRW_POST_READ_NOT', (S_WRW_HLPOSTS ? ' ' ~ lang('WRW_AUTO_FULL') : '')) }}</div>
+						{% endif %}
+						{% if S_WRW_HLPOSTS %}
+							<hr>
+							{% if post.S_HP_READ %}
+								<i class="icon fa-check fa-fw icon-green" aria-hidden="true"></i> {{ lang('WRW_READ') }}
+								<br>
+								{% if S_WRW_MODE == 'user' %}
+									<i class="icon fa-user fa-fw icon-black" aria-hidden="true"></i> {{ WRW_NAME_FULL }}
+								{% else %}
+									<i class="icon fa-users fa-fw icon-black" aria-hidden="true"></i> {{ lang('WRW_POST_READ_USERS', post.HP_COUNT) }}
+								{% endif %}
+								<br>
+								<i class="icon fa-clock-o fa-fw icon-black" aria-hidden="true"></i> <span>{{ post.HP_TIME }}</span>
+							{% else %}
+								<div class="panel{% if not post.S_WRW_READ %} bg3{% endif %} wrw-ug-post-not-read error">{{ lang('WRW_POST_READ_NOT', ' ' ~ lang('WRW_MAN_FULL')) }}</div>
+							{% endif %}
+						{% endif %}
+					</dt>
+				</dl>
+				<div class="postbody">
+					<div>
+						<h3>{{ post.SUBJECT }}</h3>
+
+						<ul class="post-buttons">
+							<li>
+								<a href="{{ post.U_WRW_POST }}" title="{{ lang('WRW_VIEW_POST_READ') }}" class="button button-icon-only">
+									<i class="icon fa-eye fa-fw" aria-hidden="true"></i><span class="sr-only">{{ lang('WRW_VIEW_POST_READ') }}</span>
+								</a>
+							</li>
+						</ul>
+
+						<p class="author">
+							<span><i class="icon fa-file fa-fw icon-bluegray icon-md" aria-hidden="true"></i> {{ lang('POST_BY_AUTHOR') }} {% if post.POSTER_AVATAR %}{{ post.POSTER_AVATAR }} {% endif %}<strong>{{ post.POSTER_NAME }}</strong> &raquo; </span>{{ post.POST_TIME }}
+						</p>
+
+						<div class="content">{{ post.MESSAGE }}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+{% endif %}
+
+<div class="action-bar bar-bottom wrw-ug-action">
+	<div class="dropdown-container">
+		<a class="button dropdown-trigger" href="#">
+			<i class="icon fa-bars fa-fw" aria-hidden="true"></i>
+			<span>{{ lang('QUICK_LINKS') }}</span>
+		</a>
+		<div class="dropdown">
+			<div class="pointer"><div class="pointer-inner"></div></div>
+			<ul class="dropdown-contents">
+				<li>
+					{% if S_WRW_FORUM %}
+						<a href="{{ U_VIEW_FORUM }}">
+							<i class="icon fa-file-o fa-fw icon-red" aria-hidden="true"></i><span>{{ lang('WRW_VIEW_FORUM') }}</span>
+						</a>
+					{% else %}
+						<a href="{{ U_INDEX }}">
+							<i class="icon fa-home fa-fw icon-black" aria-hidden="true"></i><span>{{ lang('FORUM_INDEX') }}</span>
+						</a>
+					{% endif %}
+				</li>
+				{% if S_WRW_TOPIC %}
+					<li class="separator"></li>
+					<li>
+						<a href="{{ U_VIEW_TOPIC }}">
+							<i class="icon fa-file-text-o fa-fw icon-blue" aria-hidden="true"></i><span>{{ lang('WRW_VIEW_TOPIC') }}</span>
+						</a>
+					</li>
+					<li class="separator"></li>
+					<li>
+						<a href="{{ U_WRW_TOPIC }}">
+							<i class="icon fa-eye fa-fw icon-green" aria-hidden="true"></i><span>{{ lang('WRW_VIEW_TOPIC_WRW') }}</span>
+						</a>
+					</li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+
+	{% if topicrow|length or postrow|length %}
+		<form method="post" action="{{ U_WRW_SORT }}">
+			{% include 'display_options.html' %}
+		</form>
+
+		<div class="pagination">
+			{% if topicrow|length %}{{ TOTAL_TOPICS }}{% else %}{{ TOTAL_POSTS }}{% endif %}
+			{% if pagination|length %}
+				{% include 'pagination.html' %}
+			{% else %}
+				&bull; {{ PAGE_NUMBER }}
+			{% endif %}
+		</div>
+	{% endif %}
+</div>
+
+{% if forumrow|length or topicrow|length or postrow|length %}
+	<div class="stat-block">
+		<h3>{{ lang('INFORMATION') }}</h3>
+		<p>
+			{% macro iconmd(icon) %}<i class="fa fa-{{ icon }} icon-md" aria-hidden="true"></i>{% endmacro iconmd %}
+			{% from _self import iconmd as iconmd %}
+
+			{% if forumrow|length or topicrow|length %}
+				{{ lang('WRW_INFO_COLUMN', iconmd('check'), iconmd('percent'), iconmd('clock-o')) }}
+				{% if forumrow|length %}
+					<br>{{ lang('WRW_INFO_ICON', iconmd('check'), iconmd('times')) }}
+				{% endif %}
+				{% if topicrow|length %}
+					<br>{{ lang('WRW_INFO_COLUMN_WRW', S_WRW_HLPOSTS ? '<em>' ~ lang('WRW_AUTO') ~ '</em> ' : '') }}
+					{% if S_WRW_HLPOSTS %}<br>{{ lang('WRW_INFO_COLUMN_HP') }}{% endif %}
+				{% endif %}
+			{% elseif postrow|length %}
+				{{ lang('WRW_INFO_READ') }}<br>
+				{{ lang('WRW_INFO_PANEL_WRW') }}<br>
+				{% if S_WRW_HLPOSTS %}{{ lang('WRW_INFO_PANEL_HP') }}<br>{% endif %}
+				{{ lang('WRW_INFO_ICONS_' ~ S_WRW_MODE|upper, iconmd('check'), iconmd(S_WRW_MODE === 'user' ? 'user' : 'users'), iconmd('clock-o')) }}
+			{% endif %}
+		</p>
+	</div>
+{% endif %}
+
+{% include 'overall_footer.html' %}
