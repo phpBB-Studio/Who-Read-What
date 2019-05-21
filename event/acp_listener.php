@@ -87,9 +87,14 @@ class acp_listener implements EventSubscriberInterface
 		/* Check permissions */
 		if ( $this->functions->has_perm_metrics() )
 		{
-			if ($event['action'] == 'add')
+			/* Here we can't update a non-existing index with update_subarray */
+			if ($event['action'] === 'add')
 			{
-				$event->update_subarray('forum_data', $event['forum_data']['forum_wrw_read'], true);
+				$forum_data = $event['forum_data'];
+
+				$forum_data['forum_wrw_read'] = true;
+
+				$event['forum_data'] = $forum_data;
 			}
 		}
 	}
