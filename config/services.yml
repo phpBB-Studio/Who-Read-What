@@ -44,12 +44,12 @@ services:
         arguments:
             - '@dbal.conn'
             - '@config'
+            - '@phpbbstudio.wrw.functions.common'
             - '@controller.helper'
             - '@language'
             - '@template'
             - '@user'
             - '%phpbbstudio.wrw.tables.read%'
-            - '@phpbbstudio.wrw.functions.common'
         tags:
             - { name: event.listener }
 

@@ -58,7 +58,11 @@ class moderation_listener implements EventSubscriberInterface
 	 * @return void
 	 * @access public
 	 */
-	public function __construct(\phpbb\db\driver\driver_interface $db, \phpbb\request\request $request, $table)
+	public function __construct(
+		\phpbb\db\driver\driver_interface $db,
+		\phpbb\request\request $request,
+		$table
+	)
 	{
 		$this->db			= $db;
 		$this->request		= $request;

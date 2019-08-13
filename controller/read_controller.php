@@ -129,10 +129,11 @@ class read_controller
 		$this->template->set_filenames(array('wrw_read' => '@phpbbstudio_wrw/wrw_read.html'));
 
 		$this->template->assign_vars(array(
-			'S_WRW_VIEW'	=> (bool) $this->functions->has_perm_metrics(),
+			'S_WRW_CHECK'	=> (bool) $this->functions->has_perm_check(),
 			'WRW_READ_TIME'	=> $this->user->format_date(time()),
-			// @todo: not yet in use
-			'S_WRW_USER'	=> (bool) $this->functions->is_authed(),
+			//not in use
+			//'S_WRW_USER'	=> (bool) $this->functions->is_authed(),
+			//'S_WRW_VIEW'	=> (bool) $this->functions->has_perm_metrics(),
 		));
 
 		$json_response = new \phpbb\json_response;

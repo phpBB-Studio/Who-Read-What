@@ -11,7 +11,7 @@ namespace phpbbstudio\wrw\migrations;
 /**
  * Install permission roles.
  */
-class install_roles extends \phpbb\db\migration\migration
+class install_roles_110 extends \phpbb\db\migration\migration
 {
 	/**
 	 * Assign migration file dependencies for this migration.
@@ -24,7 +24,7 @@ class install_roles extends \phpbb\db\migration\migration
 	{
 		return array(
 			'\phpbb\db\migration\data\v32x\v327',
-			'\phpbbstudio\wrw\migrations\install_permissions',
+			'\phpbbstudio\wrw\migrations\install_roles',
 		);
 	}
 
@@ -38,21 +38,11 @@ class install_roles extends \phpbb\db\migration\migration
 	{
 		$data = array();
 
-		/* Admin Group permissions */
-		if ($this->role_exists('ROLE_ADMIN_FULL'))
-		{
-			/* Yes */
-			$data[] = array('permission.permission_set', array('ROLE_ADMIN_FULL', 'a_wrw_admin', 'role'));
-			$data[] = array('permission.permission_set', array('ROLE_ADMIN_FULL', 'a_wrw_metrics', 'role'));
-		}
-
 		/* Registered user Group permissions */
 		if ($this->role_exists('ROLE_USER_STANDARD'))
 		{
 			/* Never */
-			$data[] = array('permission.permission_set', array('ROLE_USER_STANDARD', 'u_wrw_metrics', 'role', false));
-			/* Yes */
-			$data[] = array('permission.permission_set', array('ROLE_USER_STANDARD', 'u_wrw_user', 'role'));
+			$data[] = array('permission.permission_set', array('ROLE_USER_STANDARD', 'u_wrw_check', 'role', false));
 		}
 		return $data;
 	}

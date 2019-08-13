@@ -18,6 +18,65 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class memberlist_listener implements EventSubscriberInterface
 {
+	/** @var \phpbb\db\driver\driver_interface */
+	protected $db;
+
+	/** @var \phpbb\config\config */
+	protected $config;
+
+	/** @var \phpbbstudio\wrw\core\functions_common */
+	protected $functions;
+
+	/** @var \phpbb\controller\helper */
+	protected $helper;
+
+	/** @var \phpbb\language\language */
+	protected $lang;
+
+	/** @var \phpbb\template\template */
+	protected $template;
+
+	/** @var \phpbb\user */
+	protected $user;
+
+	/** @var string Who Read What table */
+	protected $read_table;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param  \phpbb\db\driver\driver_interface		$db				Database object
+	 * @param  \phpbb\config\config						$config			Configuration object
+	 * @param  \phpbbstudio\wrw\core\functions_common	$functions		Who Read What common functions
+	 * @param  \phpbb\controller\helper					$helper			Controller helper object
+	 * @param  \phpbb\language\language					$lang			Language object
+	 * @param  \phpbb\template\template					$template		Template object
+	 * @param  \phpbb\user								$user			User object
+	 * @param  string									$read_table		Who Read What table
+	 * @return void
+	 * @access public
+	 */
+	public function	__construct(
+		\phpbb\db\driver\driver_interface $db,
+		\phpbb\config\config $config,
+		\phpbbstudio\wrw\core\functions_common $functions,
+		\phpbb\controller\helper $helper,
+		\phpbb\language\language $lang,
+		\phpbb\template\template $template,
+		\phpbb\user $user,
+		$read_table
+	)
+	{
+		$this->db			= $db;
+		$this->config		= $config;
+		$this->functions	= $functions;
+		$this->helper		= $helper;
+		$this->lang			= $lang;
+		$this->template		= $template;
+		$this->user			= $user;
+		$this->read_table	= $read_table;
+	}
+
 	/**
 	 * Assign functions defined in this class to event listeners in the core.
 	 *
@@ -34,56 +93,6 @@ class memberlist_listener implements EventSubscriberInterface
 			'core.memberlist_modify_memberrow_sql'			=> 'wrw_memberlist_modify_memberrow_sql',
 			'core.memberlist_prepare_profile_data'			=> 'wrw_memberlist_prepare_profile_data',
 		);
-	}
-
-	/** @var \phpbb\db\driver\driver_interface */
-	protected $db;
-
-	/** @var \phpbb\config\config */
-	protected $config;
-
-	/** @var \phpbb\controller\helper */
-	protected $helper;
-
-	/** @var \phpbb\language\language */
-	protected $lang;
-
-	/** @var \phpbb\template\template */
-	protected $template;
-
-	/** @var \phpbb\user */
-	protected $user;
-
-	/** @var string Who Read What table */
-	protected $table;
-
-	/** @var \phpbbstudio\wrw\core\functions_common */
-	protected $functions;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param  \phpbb\db\driver\driver_interface		$db			Database object
-	 * @param  \phpbb\config\config						$config		Configuration object
-	 * @param  \phpbb\controller\helper					$helper		Controller helper object
-	 * @param  \phpbb\language\language					$lang		Language object
-	 * @param  \phpbb\template\template					$template	Template object
-	 * @param  \phpbb\user								$user		User object
-	 * @param  string									$table		Who Read What table
-	 * @param  \phpbbstudio\wrw\core\functions_common	$functions	Who Read What common functions
-	 * @return void
-	 * @access public
-	 */
-	public function	__construct(\phpbb\db\driver\driver_interface $db, \phpbb\config\config	$config, \phpbb\controller\helper $helper, \phpbb\language\language $lang, \phpbb\template\template $template, \phpbb\user $user, $table, \phpbbstudio\wrw\core\functions_common $functions)
-	{
-		$this->db			= $db;
-		$this->config		= $config;
-		$this->helper		= $helper;
-		$this->lang			= $lang;
-		$this->template		= $template;
-		$this->user			= $user;
-		$this->table		= $table;
-		$this->functions	= $functions;
 	}
 
 	/**
@@ -123,10 +132,9 @@ class memberlist_listener implements EventSubscriberInterface
 			$sql_array = $event['sql_array'];
 
 			$sql_array['SELECT'] .= ' , COUNT(wrw.post_id) as wrw_u_posts_read';
-
 			$sql_array['LEFT_JOIN'] = array();
 			$sql_array['LEFT_JOIN'][] = array(
-				'FROM'	=> array($this->table => 'wrw'),
+				'FROM'	=> array($this->read_table => 'wrw'),
 				'ON'	=> $this->db->sql_in_set('wrw.user_id', $user_id) . '
 					AND wrw.user_id <> ' . ANONYMOUS
 			);
@@ -204,35 +212,22 @@ class memberlist_listener implements EventSubscriberInterface
 		if ( $this->functions->is_authed() )
 		{
 			$sql_array = $event['sql_array'];
-
 			$user_list = $event['user_list'];
 
+			$sql_array['SELECT'] .= ' , COUNT(wrw.post_id) as wrw_u_posts_read';
+			$sql_array['LEFT_JOIN'] = array();
+			$sql_array['LEFT_JOIN'][] = array(
+				'FROM'	=> array($this->read_table => 'wrw'),
+				'ON'	=> $this->db->sql_in_set('wrw.user_id', $user_list) . '
+					AND wrw.user_id = u.user_id
+					AND wrw.user_id <> ' . ANONYMOUS
+			);
 			if ($event['mode'] == 'group')
 			{
-				$sql_array['SELECT'] .= ' , COUNT(wrw.post_id) as wrw_u_posts_read';
-
-				$sql_array['LEFT_JOIN'] = array();
-				$sql_array['LEFT_JOIN'][] = array(
-					'FROM'	=> array($this->table => 'wrw'),
-					'ON'	=> $this->db->sql_in_set('wrw.user_id', $user_list) . '
-						AND wrw.user_id = u.user_id
-						AND wrw.user_id <> ' . ANONYMOUS
-				);
-
 				$sql_array['WHERE'] .= ' GROUP BY u.user_id, ug.group_leader';
 			}
 			else
 			{
-				$sql_array['SELECT'] .= ' , COUNT(wrw.post_id) as wrw_u_posts_read';
-
-				$sql_array['LEFT_JOIN'] = array();
-				$sql_array['LEFT_JOIN'][] = array(
-					'FROM'	=> array($this->table => 'wrw'),
-					'ON'	=> $this->db->sql_in_set('wrw.user_id', $user_list) . '
-						AND wrw.user_id = u.user_id
-						AND wrw.user_id <> ' . ANONYMOUS
-				);
-
 				$sql_array['WHERE'] .= ' GROUP BY u.user_id ORDER BY u.user_id';
 			}
 

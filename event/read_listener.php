@@ -69,7 +69,15 @@ class read_listener implements EventSubscriberInterface
 	 * @return void
 	 * @access public
 	 */
-	public function	__construct(\phpbb\db\driver\driver_interface $db, \phpbb\config\config	$config, \phpbb\controller\helper $helper, \phpbb\template\template	$template, \phpbb\user $user, $table, \phpbbstudio\wrw\core\functions_common $functions)
+	public function	__construct(
+		\phpbb\db\driver\driver_interface $db,
+		\phpbb\config\config $config,
+		\phpbb\controller\helper $helper,
+		\phpbb\template\template $template,
+		\phpbb\user $user,
+		$table,
+		\phpbbstudio\wrw\core\functions_common $functions
+	)
 	{
 		$this->db			= $db;
 		$this->config		= $config;
@@ -112,6 +120,7 @@ class read_listener implements EventSubscriberInterface
 
 				'S_WRW_READ'	=> true,
 				'S_WRW_VIEW'	=> (bool) $this->functions->has_perm_metrics(),
+				'S_WRW_CHECK'	=> (bool) $this->functions->has_perm_check(),
 
 				'U_WRW_READ'	=> $this->helper->route('phpbbstudio_wrw_read'),
 				'U_WRW_LIST'	=> $this->helper->route('phpbbstudio_wrw_read_list', array('mode' => 'topic', 'id' => (int) $event['topic_id'])),

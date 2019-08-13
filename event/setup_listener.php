@@ -39,7 +39,7 @@ class setup_listener implements EventSubscriberInterface
 	/**
 	 * Constructor.
 	 *
-	 * @param  \phpbb\language\language					$lang			Language object
+	 * @param  \phpbb\language\language		$lang	Language object
 	 * @return void
 	 * @access public
 	 */
@@ -86,6 +86,7 @@ class setup_listener implements EventSubscriberInterface
 			'a_wrw_metrics',
 			'u_wrw_metrics',
 			'u_wrw_user',
+			'u_wrw_check',
 		];
 
 		foreach ($perms as $permission)

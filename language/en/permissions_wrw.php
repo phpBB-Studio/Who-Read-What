@@ -26,4 +26,5 @@ $lang = array_merge($lang, array(
 
 	'ACL_U_WRW_METRICS'			=> '<strong>Who Read What</strong> - Can see the metrics',
 	'ACL_U_WRW_USER'			=> '<strong>Who Read What</strong> - Can use the extension',
+	'ACL_U_WRW_CHECK'			=> '<strong>Who Read What</strong> - Can see the check indicator',
 ));

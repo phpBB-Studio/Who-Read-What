@@ -61,7 +61,7 @@ class functions_common
 	 */
 	public function is_dae_enabled()
 	{
-		return (bool) (($this->is_dae_enabled) && $this->config['threedi_default_avatar_extended']);
+		return $this->is_dae_enabled && $this->config['threedi_default_avatar_extended'] && ($this->auth->acl_get('u_dae_user') || $this->auth->acl_get('a_dae_admin'));
 	}
 
 	/**
@@ -146,14 +146,16 @@ class functions_common
 	 */
 	public function users_array_percentage($tot_posts, $user_total)
 	{
-		$percent = ((int) $user_total < 1) ? 0 : min(100, ( (int) $tot_posts / (int) $user_total ) ) * 100;
+		$percent = ((int) $user_total < 1) ? 0 : min(100, ((int) $user_total / (int) $tot_posts)) * 100;
 		$degrees = (360 * $percent) / 100;
 		$start = 90;
 
 		$users_array_percentage = array(
-			'TRUE_PERCENT'		=> number_format((float) ($percent / 100), 3, '.', ','),
-			'TOPIC_PERCENT'		=> number_format((float) ($percent / 100), 1, '.', ','),
+			'TOPIC_PERCENT'		=> number_format((float) $percent),
 			'DEGREE'			=> $percent > 50 ? $degrees - $start : $degrees + $start,
+
+			'TRUE_PERCENT'		=> number_format($percent, 2),
+
 			'S_WRW_AVAILABLE'	=> ((int) $tot_posts < 1) ? false : true,
 		);
 
@@ -181,6 +183,18 @@ class functions_common
 	}
 
 	/**
+	 * Returns whether the user has permission to see the square check in viwtopic.
+	 *
+	 * @return bool
+	 * @access public
+	 */
+	public function has_perm_check()
+	{
+		return ($this->auth->acl_get('u_wrw_check') || $this->auth->acl_get('a_wrw_admin') || $this->auth->acl_get('a_wrw_metrics'));
+	}
+
+
+	/**
 	 * Returns whether the user has permission to see the metrics.
 	 *
 	 * @return bool
@@ -188,7 +202,7 @@ class functions_common
 	 */
 	public function has_perm_metrics()
 	{
-		return (bool) ($this->auth->acl_get('u_wrw_metrics') || $this->auth->acl_get('a_wrw_admin') || $this->auth->acl_get('a_wrw_metrics'));
+		return ($this->auth->acl_get('u_wrw_metrics') || $this->auth->acl_get('a_wrw_admin') || $this->auth->acl_get('a_wrw_metrics'));
 	}
 
 	/**
@@ -199,7 +213,7 @@ class functions_common
 	 */
 	public function is_authed()
 	{
-		return (bool) ($this->auth->acl_get('u_wrw_user') || $this->auth->acl_get('a_wrw_admin') || $this->auth->acl_get('a_wrw_metrics'));
+		return ($this->auth->acl_get('u_wrw_user') || $this->auth->acl_get('a_wrw_admin') || $this->auth->acl_get('a_wrw_metrics'));
 	}
 
 	/**
