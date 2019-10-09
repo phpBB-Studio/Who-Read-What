@@ -74,12 +74,13 @@ class admin_controller
 
 		add_form_key('wrw_settings');
 
-		$read_active = $this->request->variable('wrw_active', (bool) $this->config['wrw_active']);
-		$read_int = $this->request->variable('wrw_read_int', (int) $this->config['wrw_read_int']);
-		$read_cpw = $this->request->variable('wrw_read_cpw', (double) $this->config['wrw_read_cpw']);
-		$read_pct = $this->request->variable('wrw_read_pct', (int) $this->config['wrw_read_pct']);
-		$read_wpm = $this->request->variable('wrw_read_wpm', (int) $this->config['wrw_read_wpm']);
-		$read_seq = $this->request->variable('wrw_read_seq', (bool) $this->config['wrw_read_seq']);
+		$read_active	= $this->request->variable('wrw_active', (bool) $this->config['wrw_active']);
+		$read_int		= $this->request->variable('wrw_read_int', (int) $this->config['wrw_read_int']);
+		$read_cpw		= $this->request->variable('wrw_read_cpw', (double) $this->config['wrw_read_cpw']);
+		$read_pct		= $this->request->variable('wrw_read_pct', (int) $this->config['wrw_read_pct']);
+		$read_wpm		= $this->request->variable('wrw_read_wpm', (int) $this->config['wrw_read_wpm']);
+		$read_seq		= $this->request->variable('wrw_read_seq', (bool) $this->config['wrw_read_seq']);
+		$read_quote		= $this->request->variable('wrw_read_quote', (bool) $this->config['wrw_read_quote']);
 
 		if ($submit)
 		{
@@ -95,6 +96,7 @@ class admin_controller
 			$this->config->set('wrw_read_pct', (int) $read_pct);
 			$this->config->set('wrw_read_wpm', (int) $read_wpm);
 			$this->config->set('wrw_read_seq', (bool) $read_seq);
+			$this->config->set('wrw_read_quote', (bool) $read_quote);
 
 			/* Log it */
 			$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'LOG_ACP_WRW_SETTINGS');
@@ -110,6 +112,7 @@ class admin_controller
 			'WRW_READ_PCT'		=> (int) $read_pct,
 			'WRW_READ_WPM'		=> (int) $read_wpm,
 			'WRW_READ_SEQ'		=> (bool) $read_seq,
+			'WRW_READ_QUOTE'	=> (bool) $read_quote,
 
 			'U_ACTION'	=> $this->u_action,
 		));

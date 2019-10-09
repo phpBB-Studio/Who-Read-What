@@ -112,11 +112,12 @@ class read_listener implements EventSubscriberInterface
 		if ($this->functions->is_authed())
 		{
 			$this->template->assign_vars(array(
-				'WRW_READ_INT'	=> (int) $this->config['wrw_read_int'],
-				'WRW_READ_PCT'	=> (int) $this->config['wrw_read_pct'],
-				'WRW_READ_CPW'	=> (double) $this->config['wrw_read_cpw'],
-				'WRW_READ_WPM'	=> (int) $this->config['wrw_read_wpm'],
-				'WRW_READ_SEQ'	=> (bool) $this->config['wrw_read_seq'],
+				'WRW_READ_INT'		=> (int) $this->config['wrw_read_int'],
+				'WRW_READ_PCT'		=> (int) $this->config['wrw_read_pct'],
+				'WRW_READ_CPW'		=> (double) $this->config['wrw_read_cpw'],
+				'WRW_READ_WPM'		=> (int) $this->config['wrw_read_wpm'],
+				'WRW_READ_SEQ'		=> (bool) $this->config['wrw_read_seq'],
+				'WRW_READ_QUOTE'	=> $this->config['wrw_read_quote'] ? 'true' : 'false',
 
 				'S_WRW_READ'	=> true,
 				'S_WRW_VIEW'	=> (bool) $this->functions->has_perm_metrics(),

@@ -28,9 +28,9 @@ class ext extends \phpbb\extension\base
 		$user->add_lang_ext('phpbbstudio/wrw', 'ext_require');
 		$lang = $user->lang;
 
-		if ( !(phpbb_version_compare(PHPBB_VERSION, '3.2.7', '>=') && phpbb_version_compare(PHPBB_VERSION, '3.3.0@dev', '<')) )
+		if ( !(phpbb_version_compare(PHPBB_VERSION, '3.2.7', '>=') && phpbb_version_compare(PHPBB_VERSION, '4.0.0@dev', '<')) )
 		{
-			$lang['EXTENSION_NOT_ENABLEABLE'] .= '<br>' . $user->lang('ERROR_PHPBB_VERSION', '3.2.7', '3.3.0@dev');
+			$lang['EXTENSION_NOT_ENABLEABLE'] .= '<br>' . $user->lang('ERROR_PHPBB_VERSION', '3.2.7', '4.0.0@dev');
 			$is_enableable = false;
 		}
 

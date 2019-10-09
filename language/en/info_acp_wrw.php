@@ -45,6 +45,8 @@ $lang = array_merge($lang, array(
 	'ACP_WRW_READ_WORDS'		=> 'Words',
 	'ACP_WRW_READ_SEQ'			=> 'Sequential reading',
 	'ACP_WRW_READ_SEQ_DESC'		=> 'This means only 1 post at a time is considered in view and being read, even though there might be multiple. Sequential reading is top to bottom.',
+	'ACP_WRW_READ_QUOTE'		=> 'Exclude quotes',
+	'ACP_WRW_READ_QUOTE_DESC'	=> 'Whether or not we should exclude quoted text while counting characters.<br>“<strong>Enabled</strong>” means the blockquotes will be removed from the post text.',
 
 	// Forums
 	'ACP_FORUM_WRW_READ'		=> 'Mark posts as read',

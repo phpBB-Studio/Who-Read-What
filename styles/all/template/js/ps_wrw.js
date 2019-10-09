@@ -135,6 +135,12 @@
 	};
 
 	wrw.wordCount = function(element) {
+		if (wrw.data.quote) {
+			element = element.clone();
+
+			element.find('blockquote').remove();
+		}
+
 		let chars = element.text().trim().replace(/[\s]+/g, "").length;
 
 		return Math.round(chars / wrw.data.cpw);

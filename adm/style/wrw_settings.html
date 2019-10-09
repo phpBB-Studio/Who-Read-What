@@ -69,6 +69,17 @@
 				<input class="radio" type="radio" id="wrw_read_seq_off" name="wrw_read_seq" value="0" {% if not WRW_READ_SEQ %} checked="checked"{% endif %}> {{ lang('DISABLED') }}
 			</dd>
 		</dl>
+		
+		<dl>
+			<dt>
+				<label for="wrw_read_quote_on"><i class="fa fa-quote-right fa-fw wrw-acp-fa-green"></i> {{ lang('ACP_WRW_READ_QUOTE') ~ lang('COLON') }}</label><br><span class="explain">{{ lang('ACP_WRW_READ_QUOTE_DESC') }}</span>
+			</dt>
+			<dd>
+				<input class="radio" type="radio" id="wrw_read_quote_on" name="wrw_read_quote" value="1" {% if WRW_READ_QUOTE %} checked="checked"{% endif %}> {{ lang('ENABLED') }}
+				&nbsp;
+				<input class="radio" type="radio" id="wrw_read_quote_off" name="wrw_read_quote" value="0" {% if not WRW_READ_QUOTE %} checked="checked"{% endif %}> {{ lang('DISABLED') }}
+			</dd>
+		</dl>
 	</fieldset>
 
 	<fieldset class="submit-buttons">
